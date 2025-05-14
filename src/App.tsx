@@ -8,7 +8,9 @@ import Profile from './components/Profile';
 import BlockchainDemo from './pages/BlockchainDemo';
 import Community from './components/Community';
 import HandRotationTracker from './components/HandRotationTracker';
+import AdminControl from './pages/AdminControl';
 import { User } from 'lucide-react';
+import HealthDashboard from './components/HealthDashboard';
 
 function AuthenticatedApp() {
   const { user, logout } = useAuth();
@@ -16,12 +18,14 @@ function AuthenticatedApp() {
   const [showBlockchain, setShowBlockchain] = React.useState(false);
   const [showCommunity, setShowCommunity] = React.useState(false);
   const [showHandTracker, setShowHandTracker] = React.useState(false);
+  const [showAdminControl, setShowAdminControl] = React.useState(false);
 
   const toggleProfile = () => {
     setShowProfile(!showProfile);
     setShowBlockchain(false);
     setShowCommunity(false);
     setShowHandTracker(false);
+    setShowAdminControl(false);
   };
 
   const toggleBlockchain = () => {
@@ -29,6 +33,7 @@ function AuthenticatedApp() {
     setShowProfile(false);
     setShowCommunity(false);
     setShowHandTracker(false);
+    setShowAdminControl(false);
   };
 
   const toggleCommunity = () => {
@@ -36,6 +41,7 @@ function AuthenticatedApp() {
     setShowProfile(false);
     setShowBlockchain(false);
     setShowHandTracker(false);
+    setShowAdminControl(false);
   };
 
   const toggleHandTracker = () => {
@@ -43,6 +49,15 @@ function AuthenticatedApp() {
     setShowProfile(false);
     setShowBlockchain(false);
     setShowCommunity(false);
+    setShowAdminControl(false);
+  };
+
+  const toggleAdminControl = () => {
+    setShowAdminControl(!showAdminControl);
+    setShowProfile(false);
+    setShowBlockchain(false);
+    setShowCommunity(false);
+    setShowHandTracker(false);
   };
 
   return (
@@ -74,6 +89,14 @@ function AuthenticatedApp() {
               >
                 Blockchain Demo
               </button>
+              {user?.role === 'admin' && (
+                <button
+                  onClick={toggleAdminControl}
+                  className="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                >
+                  Admin Control
+                </button>
+              )}
               <span className="text-sm text-gray-700">
                 Welcome, {user?.name}
               </span>
@@ -104,6 +127,8 @@ function AuthenticatedApp() {
           <Community />
         ) : showHandTracker ? (
           <HandRotationTracker />
+        ) : showAdminControl ? (
+          <AdminControl />
         ) : user?.role === 'admin' ? (
           <AdminDashboard />
         ) : (
